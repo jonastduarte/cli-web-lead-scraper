@@ -647,39 +647,54 @@ const startApp = async () => {
   let limitArg = 10; // Default limit for quick command line usage
 
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === '--niche' || args[i] === '-n') {
-      nicheArg = args[i + 1] || '';
+    const arg = args[i];
+    let key = arg;
+    let val = '';
+    let hasEquals = false;
+
+    if (arg.includes('=')) {
+      const idx = arg.indexOf('=');
+      key = arg.slice(0, idx);
+      val = arg.slice(idx + 1);
+      hasEquals = true;
+    }
+
+    if (key === '--niche' || key === '--keyword' || key === '-n' || key === '-k') {
+      nicheArg = hasEquals ? val : (args[i + 1] || '');
       isArgSearch = true;
-      i++;
-    } else if (args[i] === '--location' || args[i] === '-l') {
-      locationArg = args[i + 1] || '';
+      if (!hasEquals) i++;
+    } else if (key === '--location' || key === '-l') {
+      locationArg = hasEquals ? val : (args[i + 1] || '');
       isArgSearch = true;
-      i++;
-    } else if (args[i] === '--limit' || args[i] === '-c') {
-      limitArg = parseInt(args[i + 1]) || 0;
+      if (!hasEquals) i++;
+    } else if (key === '--limit' || key === '-c') {
+      const limitVal = hasEquals ? val : (args[i + 1] || '10');
+      limitArg = parseInt(limitVal) || 0;
       isArgSearch = true;
-      i++;
-    } else if (args[i] === '--show' || args[i] === '-s') {
+      if (!hasEquals) i++;
+    } else if (key === '--show' || key === '-s') {
       isShowArg = true;
-    } else if (args[i] === '--help' || args[i] === '-h') {
+    } else if (key === '--help' || key === '-h') {
       console.clear();
       console.log(boxen(
         chalk.bold.magenta("🚀 CLI WEB Lead Scraper v1.0.0") + "\n" +
         chalk.cyan("Uso do modo de comando de linha única:") + "\n\n" +
         chalk.white("Parâmetros disponíveis:") + "\n" +
-        chalk.green("  --niche, -n     ") + chalk.white("Nicho comercial a buscar (Ex: \"Clinica Estetica\")") + "\n" +
-        chalk.green("  --location, -l  ") + chalk.white("Localidade geográfica da busca (Ex: \"Leblon, RJ\")") + "\n" +
-        chalk.green("  --limit, -c     ") + chalk.white("Limite de leads a coletar (0 para sem limite)") + "\n" +
-        chalk.green("  --show, -s      ") + chalk.white("Exibir a tabela de leads já cadastrados no SQLite") + "\n" +
-        chalk.green("  --help, -h      ") + chalk.white("Exibir esta tela de ajuda") + "\n\n" +
+        chalk.green("  --keyword, --niche, -n  ") + chalk.white("Nicho comercial a buscar (Ex: \"Clinica Estetica\")") + "\n" +
+        chalk.green("  --location, -l          ") + chalk.white("Localidade geográfica da busca (Ex: \"Leblon, RJ\")") + "\n" +
+        chalk.green("  --limit, -c             ") + chalk.white("Limite de leads a coletar (0 para sem limite)") + "\n" +
+        chalk.green("  --show, -s              ") + chalk.white("Exibir a tabela de leads já cadastrados no SQLite") + "\n" +
+        chalk.green("  --help, -h              ") + chalk.white("Exibir esta tela de ajuda") + "\n\n" +
         chalk.cyan("Exemplos de comando:") + "\n" +
-        chalk.yellow("  node cli.js --niche \"Estetica\" --location \"Copacabana\" --limit 5") + "\n" +
+        chalk.yellow("  node cli.js --keyword=\"Clinica Estetica\" --location=\"Rio de Janeiro\" --limit=20") + "\n" +
+        chalk.yellow("  node cli.js -n \"Estetica\" -l \"Copacabana\" -c 5") + "\n" +
         chalk.yellow("  node cli.js --show"),
         { padding: 1, borderStyle: 'double', borderColor: 'cyan' }
       ));
       process.exit(0);
     }
   }
+
 
   if (isShowArg) {
     showHeader();
