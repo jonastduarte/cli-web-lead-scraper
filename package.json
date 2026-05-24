@@ -1,0 +1,20 @@
+{
+  "name": "cli-web-lead-scraper",
+  "version": "1.0.0",
+  "description": "Premium Linux Terminal CLI Lead Scraper and Brand Analyzer",
+  "main": "cli.js",
+  "type": "module",
+  "scripts": {
+    "start": "node cli.js"
+  },
+  "dependencies": {
+    "boxen": "^7.1.1",
+    "chalk": "^5.3.0",
+    "cli-table3": "^0.6.3",
+    "inquirer": "^9.2.12",
+    "ora": "^7.0.1",
+    "puppeteer": "^22.6.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  }
+}

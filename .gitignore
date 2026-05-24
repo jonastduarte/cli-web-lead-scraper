@@ -1,0 +1,34 @@
+# Dependências
+node_modules/
+
+# Banco de dados local (dados pessoais - não versionar)
+*.db
+*.db-shm
+*.db-wal
+leads.db
+
+# Arquivos de dados e backups
+leads.json
+leads_backup.json
+leads_export.*
+leads_report.md
+
+# Logs
+*.log
+npm-debug.log*
+
+# Variáveis de ambiente
+.env
+.env.local
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Scripts temporários
+clear_dbs.mjs
+install_gh.sh
